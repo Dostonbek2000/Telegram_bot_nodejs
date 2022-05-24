@@ -33,7 +33,7 @@ const transporter = nodemailer.createTransport({
 });
 
 app.get('/',(req,res)=>{
-    res.send('Your telegram bot is working')
+    res.send('<h1 style="text-align:center;color:orange;font-family:cursive;">Your telegram bot is working</h1>')
 })
 
 app.post(URI, async (req , res)=>{
