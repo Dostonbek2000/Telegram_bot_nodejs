@@ -32,6 +32,10 @@ const transporter = nodemailer.createTransport({
   },
 });
 
+app.get('/',(req,res)=>{
+    res.send('Your telegram bot is working')
+})
+
 app.post(URI, async (req , res)=>{
     console.log("me",req.body);
     
