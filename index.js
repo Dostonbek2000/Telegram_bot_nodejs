@@ -32,46 +32,27 @@ const transporter = nodemailer.createTransport({
   },
 });
 
-
-let counter = 0
-//`From Dostonbek: Siz ${text} deb yozdingiz!`
-let arr = []
 app.post(URI, async (req , res)=>{
     console.log("me",req.body);
     
-    const chatId = req.body.message.chat.id
-    const text = req.body.message.text
-    arr.push(chatId)
-    let email = 'abdumuxtorov.dostonbek.main@gmail.com'
-    let taklif = ''
-    let obj = {name:''}
-    obj.name = text
-
-    let mine1 = 'Salom Online Botga Hush Kelipsiz . Ismingiz nima ?'
-    let mine2 = 'Sizning taklifingiz'
-    let mine3 = 'Gmail manzilingizni kiriting'
-
-    counter=counter+1
+    const chatId = req.body.message.chat.id  ? req.body.message.chat.id : req.body.my_chat_member.chat.id ? req.body.my_chat_member.chat.id : ''
+    const text = req.body.message.text ? req.body.message.text : req.body.my_chat_member.text ? req.body.my_chat_member.text : ''
+    const Person = req.body.message.from.username  ? req.body.message.from.username : req.body.my_chat_member.from.username ? req.body.my_chat_member.from.username : ''
+    
 
     let DATA = {
         chat_id:chatId,
-        text:counter === 1 ? mine1 : counter ===2 ? mine2 : counter === 3 ? mine3 : `Sorovingiz muvaffaqiyatli junatildi iltimos elektron pochtangizni tekshiring`
+        text:`From Dostonbek: Siz ${text} deb yozdingiz!`
     }
-    
-    
-    text.includes('@gmail.com') ?   transporter.sendMail({
-            from: 'maingmaildasdsdasda@gmail.com', // sender address
-            to: text.includes('@gmail.com') ? text : email, // list of receivers
-            subject: "Hi! This is Dostonbek High Corporation",
-            text: "Hi!",
-            html: `<b>Salom hurmatli mijoz sizning  sorovingizni qabul qildik , Siz bilan tez orada bog'lanamiz iltimos javobimizni kuting  !</b>`, 
-        }).then(info => {
-            console.log({info})
-        }).catch(console.error) : console.log('it is good');;
-    
-    await axios.post(`${TELEGRAM_API}/sendMessage`,DATA)
-    
-
+    let DATA1 = {
+        chat_id:chatId,
+        text:`Salom ${Person} ,Sizni tashrifingizdan mamnunmiz`
+    }
+    if(text==='/start'){
+        await axios.post(`${TELEGRAM_API}/sendMessage`,DATA1)
+    }else{
+        await axios.post(`${TELEGRAM_API}/sendMessage`,DATA)
+    }
     return  res.send()
 })
 
